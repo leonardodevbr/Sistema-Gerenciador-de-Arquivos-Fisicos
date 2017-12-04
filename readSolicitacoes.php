@@ -26,14 +26,13 @@ require_once("bd/conexao.php");
 
 		$select = $conn->query("SELECT * FROM solicitacao s INNER JOIN usuario u ON s.usuario_id_usuario = u.id_usuario {$where}");
 		$qnt = $select->rowCount();
-		$modal = '';
 
 		if($qnt > 0){
 			foreach ($select as $row) {
 
 				$id_solicitacao = $row['id_solicitacao'];
 				$solicitacao = '
-					<a class="text-muted" href="" title="Visualizar" data-toggle="modal" data-target="#verSolicitacao-'.$id_solicitacao.'">
+					<a class="text-muted" href="" title="Visualizar" onclick="carregaModal('.$id_solicitacao.')">
 						<i class="fa fa-eye fa-2x"></i>
 					</a>';
 				$id_usuario = $row['id_usuario'];
@@ -108,57 +107,6 @@ require_once("bd/conexao.php");
 						<td>'.$status.'</td>
 						<td>'.$btn_acao.'</td>
 					</tr>
-				';
-				$print = '<h5 class="modal-title" id="VerSolicitacao">Solicitação '.$id_solicitacao.' - '.$nome_usuario.'</h5>';
-				$print .= '<div class="table-responsive">
-					      	<table class="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>Código</th>
-										<th>Descrição</th>
-										<th>Localização</th>
-										<th>Observação</th>
-									</tr>
-								</thead>
-								<tbody>
-									'.$table_item_solicitado.'
-								</tbody>
-					      	</table>
-					      </div>';
-
-				$modal .= '
-					<div class="modal fade" id="verSolicitacao-'.$id_solicitacao.'" tabindex="-1" role="dialog" aria-labelledby="VerSolicitacao" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="VerSolicitacao">Solicitação '.$id_solicitacao.' - '.$nome_usuario.'</h5>
-					        <button type="button" class="close hidden-print" data-dismiss="modal" aria-label="Fechar">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div class="modal-body table-responsive d-block">
-					      	<table class="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>Código</th>
-										<th>Descrição</th>
-										<th>Localização</th>
-										<th>Observação</th>
-									</tr>
-								</thead>
-								<tbody>
-									'.$table_item_solicitado.'
-								</tbody>
-					      	</table>
-					      </div>
-					      <div class="modal-footer hidden-print">
-					      	'.$btn_acao.'
-					        <button onclick="imprimirModal();" type="button" class="w-100 btn btn-sm btn-warning">Imprimir</button>
-					        <button type="button" class="w-50 btn btn-sm btn-secondary" data-dismiss="modal">Fechar</button>
-					      </div>
-					    </div>
-					  </div>
-					</div>
 				';
 
 			}/*Fim do foreach*/

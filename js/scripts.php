@@ -262,6 +262,26 @@ function delLocalizacao(id){
     });
 }
 
+function delDoc(id){
+    $('#modalConfirm').modal('toggle');
+
+    $("#btnSim").click(function () {
+        $.post("deleta-documento.php", "id_doc="+id, function(data){
+            if(data == 'ok'){
+                $('#modalConfirm').modal('toggle');
+                mensagem_close("Documento excluído com sucesso!", "success", "#retorno");
+                setTimeout(function(){
+                    location.reload();
+                }, 3000);
+            }else{
+                alert(data);
+            }
+            // $('#modalConfirm').modal('toggle');
+            // $("#retorno").append(data);
+        });
+    });
+}
+
 function explodeURL(){
     var url = location.search.slice(1);
     var partes = url.split('&');
@@ -623,6 +643,17 @@ $("#btn_buscar").click(function(){
     getPageListar($('input:radio[name=tabela]:checked').val(),<?php echo $tipo_usuario; ?>,$('input:text[name=termo]').val());
 });
 
+$("#filter_cli").change(function(){
+    var cliente_id = $(this).val();
+    location.href = "?pg=editar-documento&filter_cli="+cliente_id;
+});
+
+$("#filter_caso").change(function(){
+    var cliente_id = $("#filter_cli").val();
+    var caso_id = $(this).val();
+    location.href = "?pg=editar-documento&filter_cli="+cliente_id+"&filter_caso="+caso_id;
+});
+
 $("#todos_docs").click(function(){
     marcardesmarcar();
 });
@@ -683,9 +714,11 @@ $('#selectClienteGerarLocalizacao').change(function(){
 
 $(document).ready(function(){
     var infoURL = explodeURL();
-    next_cod_doc(infoURL['cs_id']);
 
     switch(infoURL['pg']){
+        case 'cadastrar-documento':
+            next_cod_doc(infoURL['cs_id']);
+        break;
         case 'editar-localizacao':
             readLocalizacoes("#readLocalizacoes", "editar-localizacao");
         break;
