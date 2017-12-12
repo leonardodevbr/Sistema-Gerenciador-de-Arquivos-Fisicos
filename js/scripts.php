@@ -112,7 +112,7 @@ function desmarcar(){
 function geraEtiqueta(id_cliente){
     var id_local = $("#selectLocalizacaoEtiqueta").val();
     // alert('ID LOCAL: '+id_local+' - ID CLIENTE: '+id_cliente);
-    $.post("geraEtiqueta", "localizacao="+id_local+"&cliente="+id_cliente, function(etiquetas){
+    $.post("geraEtiqueta.php", "localizacao="+id_local+"&cliente="+id_cliente, function(etiquetas){
         $("#etiquetasCarregadas").remove();
         $("#carregaEtiqueta").append(etiquetas);
     });

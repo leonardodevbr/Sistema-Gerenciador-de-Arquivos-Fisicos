@@ -1,10 +1,10 @@
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 	$(document).ready(function(){
 		$("#buscar").trigger('click');
 	});
 
-</script>
+</script> -->
 <?php	require_once("bd/conexao.php"); $destino = ''; ?>
 <br>
 	<div class="row">
