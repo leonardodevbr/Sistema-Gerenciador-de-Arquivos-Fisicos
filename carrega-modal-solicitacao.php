@@ -1,49 +1,62 @@
-<h5 class="modal-title" id="VerSolicitacao">Solicitação '.$id_solicitacao.' - '.$nome_usuario.'</h5>';
-<div class="table-responsive">
-  	<table class="table table-bordered table-striped">
-		<thead>
-			<tr>
-				<th>Código</th>
-				<th>Descrição</th>
-				<th>Localização</th>
-				<th>Observação</th>
-			</tr>
-		</thead>
-		<tbody>
-			'.$table_item_solicitado.'
-		</tbody>
-  	</table>
-  </div>';
+<?php
+	if(!isset($_POST['id'])){
+		header("Location: /");
+	}else{
+		$id_solicitacao = $_POST['id'];
+		// $id_solicitacao = 25;
+		try {
+		require_once("bd/conexao.php");
 
-<div class="modal fade" id="verSolicitacao-'.$id_solicitacao.'" tabindex="-1" role="dialog" aria-labelledby="VerSolicitacao" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="VerSolicitacao">Solicitação '.$id_solicitacao.' - '.$nome_usuario.'</h5>
-        <button type="button" class="close hidden-print" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body table-responsive d-block">
-      	<table class="table table-bordered table-striped">
-			<thead>
-				<tr>
-					<th>Código</th>
-					<th>Descrição</th>
-					<th>Localização</th>
-					<th>Observação</th>
-				</tr>
-			</thead>
-			<tbody>
-				'.$table_item_solicitado.'
-			</tbody>
-      	</table>
-      </div>
-      <div class="modal-footer hidden-print">
-      	'.$btn_acao.'
-        <button onclick="imprimirModal();" type="button" class="w-100 btn btn-sm btn-warning">Imprimir</button>
-        <button type="button" class="w-50 btn btn-sm btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
+			$select = $conn->query("SELECT * FROM solicitacao s INNER JOIN usuario u ON s.usuario_id_usuario = u.id_usuario WHERE s.id_solicitacao = {$id_solicitacao}");
+			$qnt = $select->rowCount();
+
+			foreach ($select as $row) {
+				$id_usuario = $row['id_usuario'];
+				$nome_usuario = $row['nome_usuario'];
+				$status_solicitacao = $row['status_solicitacao'];
+				$table_item_solicitado = '';
+
+
+				$solicitacoes = $conn->query("SELECT * FROM solicitacao_has_documento WHERE solicitacao_id_solicitacao = {$id_solicitacao}");
+
+				foreach ($solicitacoes as $sol) {
+					$id_documento = $sol['documento_id_documento'];
+					$documento = $conn->query("SELECT * FROM documento WHERE id_documento = {$id_documento}")->fetch();
+					if($documento['alocado'] == '1'){
+						$id_local = $conn->query("SELECT * FROM localizacao_has_documento WHERE documento_id_documento = {$id_documento}")->fetch();
+							$id_localizacao = ($id_local[0] == '' ? 0 : $id_local[0]);
+						$nome_localizacao = $conn->query("SELECT * FROM localizacao loc INNER JOIN prateleira pra ON loc.prateleira_id_prateleira = pra.id_prateleira WHERE id_localizacao = {$id_localizacao}")->fetch();
+							$localizacao = $nome_localizacao['tipo_localizacao']." ".$nome_localizacao['num_localizacao']." - P ".$nome_localizacao['num_prateleira'];
+
+					}else{
+						$localizacao = 'Não Definido';
+					}
+
+					$table_item_solicitado .= '<tr><td>'.$documento['cod_documento'].'</td><td>'.$documento['descricao_documento'].'</td><td>'.$localizacao.'</td></tr>';;
+				}
+
+				if($status_solicitacao == '0'){
+					$status = 'Solicitado';
+				}else if($status_solicitacao == '3'){
+					$status = 'Cancelado';
+				}else if($status_solicitacao == '2'){
+					$status = 'Finalizado';
+				}else{
+					$status = 'Emprestado';
+				}
+			}
+
+		} catch (Exception $e1) {
+			$msg = "Erro ao listar as solicitações existentes!<br>Detalhes: ".$e1->getMessage();
+		}
+
+		$result['id_solicitacao'] = $id_solicitacao;
+		$result['id_usuario'] = $id_usuario;
+		$result['usuario'] = $nome_usuario;
+		$result['msg'] = $msg;
+		$result['status'] = $status;
+		$result['linhas'] = $table_item_solicitado;
+
+		echo json_encode($result);
+	}
+?>

@@ -1,5 +1,4 @@
 <div id="carregando"></div>
-
 <?php
 	if($tipo_usuario == '0'){
 		include_once("login.php");

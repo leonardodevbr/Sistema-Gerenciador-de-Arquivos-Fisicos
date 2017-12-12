@@ -29,11 +29,13 @@
 				INNER JOIN
 				  cliente c
 				ON
-				  d.caso_cliente_id_cliente = c.id_cliente
+				 	d.caso_cliente_id_cliente = c.id_cliente
 				INNER JOIN
 				  caso cs
 				ON
-				  cs.id_caso = d.caso_id_caso
+				  	cs.id_caso = d.caso_id_caso
+				WHERE
+					d.ativo = 1
 				ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,
 				  (0 + SUBSTRING(cod_cliente, 2)) ASC";
@@ -55,7 +57,7 @@
 				ON
 				  cs.id_caso = d.caso_id_caso
 				WHERE
-				  d.descricao_documento LIKE '%{$termo}%' OR d.cod_documento LIKE '%{$termo}%' OR d.obs_documento LIKE '%{$termo}%' OR d.processo_documento LIKE '%{$termo}%' OR c.nome_cliente LIKE '%{$termo}%'  OR cs.descricao_caso LIKE '%{$termo}%'
+				  d.ativo = 1 AND d.descricao_documento LIKE '%{$termo}%' OR d.cod_documento LIKE '%{$termo}%' OR d.obs_documento LIKE '%{$termo}%' OR d.processo_documento LIKE '%{$termo}%' OR c.nome_cliente LIKE '%{$termo}%'  OR cs.descricao_caso LIKE '%{$termo}%'
 				ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,
 				  (0 + SUBSTRING(cod_cliente, 2)) ASC";
@@ -384,7 +386,7 @@
 					  caso cs
 					ON
 					  cs.id_caso = d.caso_id_caso
-					WHERE d.id_documento IN (".implode(', ', array_map('intval', $id_documento)).")
+					WHERE d.ativo = 1 AND d.id_documento IN (".implode(', ', array_map('intval', $id_documento)).")
 					ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,
 				  (0 + SUBSTRING(cod_cliente, 2)) ASC";

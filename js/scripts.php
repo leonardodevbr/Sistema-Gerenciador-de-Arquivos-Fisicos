@@ -36,6 +36,55 @@ function enviaSolicitacaoRedefinicaoSenha(){
     }
 }
 
+function carregaModal(id){
+    $("#verSolicitacao").modal('show');
+    $.post(
+        "carrega-modal-solicitacao.php",
+        "id="+id,
+        function (result){
+            var id_solicitacao = result.id_solicitacao;
+            var id_usuario = result.id_usuario;
+            var usuario = result.usuario;
+            var msg = result.msg;
+            var status = result.status;
+            var linhas = result.linhas;
+            var btn = '';
+            var title = 'Solicitação N° '+id_solicitacao+' - '+usuario;
+
+
+            switch (status) {
+                case 'Solicitado':
+                    btn = '<button onclick="empresta('+id_solicitacao+', '+id_usuario+');" class="w-100 btn btn-sm btn-warning" type="button">Emprestar</button>';
+                break;
+                case 'Cancelado':
+                    btn = '<button onclick="remove('+id_solicitacao+', '+id_usuario+');" class="w-100 btn btn-sm btn-secondary" type="button">Remover</button>';
+                break;
+                case 'Finalizado':
+                    btn = '<button onclick="reabrir('+id_solicitacao+', '+id_usuario+');" class="w-100 btn btn-sm btn-danger" type="button">Reabrir</button>';
+                break;
+                case 'Emprestado':
+                    btn = '<button onclick="devolve('+id_solicitacao+', '+id_usuario+');" class="w-100 btn btn-sm btn-info" type="button">Devolver</button>';
+                break;
+            }
+
+            $("#verSolicitacao").on('shown.bs.modal', function(){
+                $("#titleVerSolicitacao").empty().append(title);
+                $("#bodyVerSolicitacao").empty().append(linhas);
+                $("#btnAcaoSolicitacao").empty().append(btn);
+            });
+            console.log(msg);
+        },
+    'json');
+}
+
+function imprimirModal(){
+    var conteudo = $("#printInfo").html();
+    var tela_impressao = window.open('about:blank');
+    tela_impressao.document.write(conteudo);
+    tela_impressao.window.print();
+    tela_impressao.window.close();
+}
+
 function carrega($id){
     $("#"+$id).append("<div class='text-center'><small>Carregando...</small><br><img src='img/carregando.gif' alt='Carregando...'/><br></div>");
 }
@@ -78,12 +127,9 @@ var mensagem = '<div id="alertMsg" class="alert text-center alert-'+type+' alert
     if(time){
         setTimeout(function(){
             $(".alert").alert('close');
+            location.reload();
         }, time);
     }
-}
-
-function imprimirModal(){
-    window.print();
 }
 
 function existeDoc(id){
@@ -129,6 +175,42 @@ function next_cod_doc(id_cso = null){
             $("#codDocumento").val(data);
         });
     $("#descricao").focus();
+}
+
+function desativaDoc(doc){
+    $('#modalConfirm').modal('toggle');
+
+    $("#btnSim").click(function () {
+        $('#modalConfirm').modal('toggle');
+        $.post("desativa-ativa-documento.php",
+            "doc="+doc+"&op=0",
+            function(result){
+                if(result.data == 'ok'){
+                    mensagem_close(result.msg, 'success', '#mensagemRetorno', 3000);
+                }else{
+                    mensagem_close(result.msg, 'warning', '#mensagemRetorno', 5000);
+                }
+            }
+        ,'json');
+    });
+}
+
+function ativaDoc(doc){
+    $('#modalConfirm').modal('toggle');
+
+    $("#btnSim").click(function () {
+        $('#modalConfirm').modal('toggle');
+        $.post("desativa-ativa-documento.php",
+            "doc="+doc+"&op=1",
+            function(result){
+                if(result.data == 'ok'){
+                    mensagem_close(result.msg, 'success', '#mensagemRetorno', 3000);
+                }else{
+                    mensagem_close(result.msg, 'warning', '#mensagemRetorno', 5000);
+                }
+            }
+        ,'json');
+    });
 }
 
 function empresta(id_solicitacao, id_usuario){
@@ -734,6 +816,8 @@ $(document).ready(function(){
         break;
         case 'buscar':
         break;
+        default:
+            $("#carregaSolicitacoes").load("readSolicitacoes.php");
     }
 
     listaCaso($('#clienteDoc').val(), "#casoDoc");
@@ -741,7 +825,6 @@ $(document).ready(function(){
     // setInterval(function() {
     //     $("#carregaSolicitacoes").load("readSolicitacoes.php");
     // }, 500);
-    $("#carregaSolicitacoes").load("readSolicitacoes.php");
 });
 
 </script>

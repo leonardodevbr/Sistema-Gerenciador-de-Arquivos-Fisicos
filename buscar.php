@@ -62,6 +62,8 @@ if(isset($_GET['tabela']) && isset($_GET['id'])){
 			ON
 			  cs.id_caso = d.caso_id_caso
 			WHERE
+			d.ativo = 1
+			AND
 			id_documento = '{$id}'";
 			$msg_vazio = '<div class="alert alert-info text-center"><strong>Nenhum registro encontrado.</strong></div>';
 			try {
@@ -181,6 +183,8 @@ if(isset($_GET['tabela']) && isset($_GET['id'])){
 							ON
 							  cs.id_caso = d.caso_id_caso
 							WHERE
+							d.ativo = 1
+							AND
 							  id_documento = '{$id}'
 							ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,
@@ -264,6 +268,8 @@ if(isset($_GET['tabela']) && isset($_GET['id'])){
 			ON
 			  cs.id_caso = d.caso_id_caso
 			WHERE
+			d.ativo = 1
+			AND
 			  caso_cliente_id_cliente = '{$id}'
 			ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,
@@ -360,6 +366,8 @@ if(isset($_GET['tabela']) && isset($_GET['id'])){
 				ON
 				  cs.id_caso = d.caso_id_caso
 				WHERE
+				d.ativo = 1
+				AND
 				  d.caso_id_caso = '{$id}'
 				ORDER BY
 				  SUBSTRING(cod_cliente, 1, 1) ASC,

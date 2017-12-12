@@ -1,6 +1,4 @@
-<br>
-<div id="retorno" class="my-3"></div>
-<div class="row">
+<div class="row mt-4">
 	<div class="form-group col">
 		<label for="filter_cli">Filtrar Cliente:</label>
 		<select id="filter_cli" name="filter_cli" class="form-control">
@@ -90,6 +88,8 @@
 	</form>
 </div>
 
+<div id="mensagemRetorno" class="my-4"></div>
+
 <div class="table-responsive">
 <?php
 	echo '<table class="table table-striped table-bordered table-sm">';
@@ -132,7 +132,7 @@
 			if($qnt > 0){
 				echo '
 					<tr>
-						<td colspan="5" class="text-center">Número de documentos escontrados: '.$qnt.'</td>
+						<td colspan="6" class="text-center">Número de documentos escontrados: '.$qnt.'</td>
 					</tr>
 				';
 			}
@@ -141,7 +141,7 @@
 					<th class="text-center">Código</th>
 					<th class="text-center">Descrição</th>
 					<th class="text-center">Processo</th>
-					<th colspan="2" class="text-center">Ação</th>
+					<th colspan="3" class="text-center">Ação</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -157,16 +157,23 @@
 							<td class="text-center">
 								<a class="btn btn-info btn-sm" href="?pg=form-editar-documento&id='.$row['id_documento'].'">Editar</a>
 							</td>
-							'.($tipo_usuario == 1 ? '<td class="text-center">
-														<button class="btn btn-danger btn-sm" onclick="delDoc('.$row['id_documento'].');">Excluir</button>
-													</td>' : '').'
+							'.($tipo_usuario == 1 ? '
+							<td class="text-center">
+								<button class="btn btn-danger btn-sm" onclick="delDoc('.$row['id_documento'].');">Excluir</button>
+							</td>
+							<td  class="text-center">
+							'.($row['ativo'] == 1 ? '
+								<button class="btn btn-warning btn-sm" onclick="desativaDoc('.$row['id_documento'].');">Desativar</button>' : '
+								<button class="btn btn-success btn-sm" onclick="ativaDoc('.$row['id_documento'].');">Ativar</button>').'
+							</td>
+							' : '').'
 						</tr>
 					';
 				}
 			}else{
 				echo '
 					<tr>
-						<td colspan="5">Nenhum documento cadastrado</td>
+						<td colspan="6">Nenhum documento cadastrado</td>
 					</tr>
 				';
 			}

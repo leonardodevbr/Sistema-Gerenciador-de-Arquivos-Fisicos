@@ -122,8 +122,6 @@
     $menu = '';
   }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
@@ -447,3 +445,4 @@
   </form>
   <div id="modalSolicitacao"></div>
 </body>
+</html>
