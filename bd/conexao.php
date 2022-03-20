@@ -1,11 +1,5 @@
 <?php
 require("config.php");
-//As linhas comentadas abaixo são para definir as constantes de acordo com sua configuração. 
-//É preciso criar o arquivo "config.php" na pasta "bd" e adicionar essas linhas com suas configurações.
-//define("HOST", "localhost");
-//define("USER", "username");
-//define("PASS", "password!");
-//define("DB", "arquivo");
 
 try {
 

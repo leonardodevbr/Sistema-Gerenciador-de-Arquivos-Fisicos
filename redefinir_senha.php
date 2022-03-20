@@ -24,7 +24,7 @@
 
 			//Define os destinatário(s)
 			//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-			$mail->AddAddress("ti@marceloleal.adv.br");
+			$mail->AddAddress("ti@homeoffice.dev.br");
 
 			$mail->MsgHTML("O usuário do sistema de arquivo que utiliza o e-mail <b>".$email."</b> atualizou sua senha com sucesso.");
 

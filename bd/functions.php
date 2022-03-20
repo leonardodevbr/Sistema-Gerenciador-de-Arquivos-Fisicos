@@ -26,7 +26,7 @@ function emailCancelaSolicitacao($id_solicitacao, $conn){
   $mensagem .= "<br>Detalhes:";
   $mensagem .= "<br>Data: ".$dataAtual;
   $mensagem .= "<br>Hora: ".$horaAtual;
-  $mensagem .= "<br><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@marceloleal.adv.br</i></small>";
+  $mensagem .= "<br><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@homeoffice.dev.br</i></small>";
 
   // echo $mensagem;
 
@@ -102,7 +102,7 @@ function emailNovaSolicitacao($nome_usuario, $email_usuario, $pass_usuario, $con
   $mensagem .= "<br>Data: ".$dataAtual;
   $mensagem .= "<br>Hora: ".$horaAtual."hs";
   $mensagem .= "<br>Status: ".$status;
-  $mensagem .= "<br><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@marceloleal.adv.br</i></small>";
+  $mensagem .= "<br><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@homeoffice.dev.br</i></small>";
 
   // echo $mensagem;
 
@@ -191,7 +191,7 @@ function emailReciboEmprestimo($id_solicitacao, $conn, $id_usuario_logado){
       $item_solicitado .= '<li>'.$documento['cod_documento'].'</li>';
     }
 
-    $mensagem .=  $item_solicitado."</ul><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@marceloleal.adv.br</i></small>";
+    $mensagem .=  $item_solicitado."</ul><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@homeoffice.dev.br</i></small>";
 
     // echo $mensagem;
 
@@ -283,7 +283,7 @@ function emailReciboDevolucao($id_solicitacao, $conn, $id_usuario_logado){
       $item_solicitado .= '<li>'.$documento['cod_documento'].'</li>';
     }
 
-    $mensagem .=  $item_solicitado."</ul><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@marceloleal.adv.br</i></small>";
+    $mensagem .=  $item_solicitado."</ul><br><small>Em caso de dúvidas, entre em contato com o setor de T.I através do endereço <i>ti@homeoffice.dev.br</i></small>";
 
     // echo $mensagem;
 
@@ -348,7 +348,7 @@ function emailRecuperarSenha($email, $code, $id, $conn){
     $horaAtual = date('H:i', time());
 
     $assunto = "Redefinição de Senha";
-    $linkRedefinicao = "<a href='http://arquivo.marceloleal.adv.br/redefinindo-senha.php?code=".$code."'>neste link</a>";
+    $linkRedefinicao = "<a href='http://arquivo.homeoffice.dev.br/redefinindo-senha.php?code=".$code."'>neste link</a>";
     $mensagem = "<b><h3>Alguém solicitou uma redefinição de senha para o usuário vinculado a este e-mail</h3></b>";
     $mensagem .= "Solicitado em : ".$dataAtual.", às ".$horaAtual."hs.<br><br>";
     $mensagem .= "Clique ".$linkRedefinicao." e informe os dados abaixo na tela de login do sistema: <br><br>";
